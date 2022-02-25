@@ -8,7 +8,8 @@
 	txn_detail TEXT DEFAULT '',
     txn_hash TEXT DEFAULT '',
 	txn_verified INTEGER DEFAULT 0,
-	xrpl_verified INTEGER DEFAULT 0
+	xrpl_verified INTEGER DEFAULT 0,
+	custom_airdrop_amount NUMERIC DEFAULT -1
 );
 CREATE TABLE IF NOT EXISTS ExclusionList (
 	id INTEGER PRIMARY KEY AUTOINCREMENT,

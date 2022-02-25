@@ -60,19 +60,22 @@ namespace XRPLAirdrop
             }
         }
 
-        public async Task<Submit> SendXRPPaymentAsync(IRippleClient client, string destinationAddress, uint sequence, int feeInDrops, decimal transferFee = 0)
+        public async Task<Submit> SendXRPPaymentAsync(IRippleClient client, string destinationAddress, uint sequence, int feeInDrops, decimal amount, decimal transferFee = 0)
         {
             try
             {
+                string airdropAmount = config.airdropTokenAmt;
+                if (amount >= 0) airdropAmount = amount.ToString("G", System.Globalization.CultureInfo.InvariantCulture);
+
                 IPaymentTransaction paymentTransaction = new PaymentTransaction();
                 paymentTransaction.Account = config.airdropAddress;
                 paymentTransaction.Destination = destinationAddress;
-                paymentTransaction.Amount = new Currency { CurrencyCode = config.currencyCode, Issuer = config.issuerAddress, Value = config.airdropTokenAmt };
+                paymentTransaction.Amount = new Currency { CurrencyCode = config.currencyCode, Issuer = config.issuerAddress, Value = airdropAmount };
                 paymentTransaction.Sequence = sequence;
                 paymentTransaction.Fee = new Currency { CurrencyCode = "XRP", ValueAsNumber = feeInDrops };
                 if(transferFee > 0)
                 {
-                    paymentTransaction.SendMax = new Currency { CurrencyCode = config.currencyCode, Issuer = config.issuerAddress, Value = (config.airdropTokenAmt + (Convert.ToDecimal(config.airdropTokenAmt) * (transferFee / 100))).ToString() };
+                    paymentTransaction.SendMax = new Currency { CurrencyCode = config.currencyCode, Issuer = config.issuerAddress, Value = (airdropAmount + (Convert.ToDecimal(airdropAmount) * (transferFee / 100))).ToString() };
                 }
 
                 TxSigner signer = TxSigner.FromSecret(config.airdropSecret);  //secret is not sent to server, offline signing only

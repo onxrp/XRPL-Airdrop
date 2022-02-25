@@ -90,7 +90,7 @@ namespace XRPLAirdrop
 
                         int feeInDrops = Convert.ToInt32(Math.Floor(f.Drops.OpenLedgerFee * config.feeMultiplier));
 
-                        Submit response = await xrpl.SendXRPPaymentAsync(client, a.address, sequence, feeInDrops, config.transferFee);
+                        Submit response = await xrpl.SendXRPPaymentAsync(client, a.address, sequence, feeInDrops, a.custom_airdrop_amount, config.transferFee);
                         //Transaction Node isn't Current. Wait for Network
                         if (response.EngineResult == "noCurrent" || response.EngineResult == "noNetwork")
                         {
@@ -99,7 +99,7 @@ namespace XRPLAirdrop
                             {
                                 //Throttle for node to catch up
                                 Thread.Sleep(config.txnThrottle * 3000);
-                                response = await xrpl.SendXRPPaymentAsync(client, a.address, sequence, feeInDrops);
+                                response = await xrpl.SendXRPPaymentAsync(client, a.address, sequence, feeInDrops, a.custom_airdrop_amount);
                                 retry++;
                             }
                         }

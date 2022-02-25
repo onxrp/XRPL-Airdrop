@@ -359,7 +359,8 @@ namespace XRPLAirdrop
                             {
                                 id = Convert.ToInt32(dr["id"]),
                                 address = dr["address"].ToString(),
-                                balance = (decimal)dr["balance"]
+                                balance = (decimal)dr["balance"],
+                                custom_airdrop_amount = (decimal)dr["custom_airdrop_amount"]
                             });
                         }
                     }
@@ -627,31 +628,29 @@ namespace XRPLAirdrop
             {
                 using (var reader = new StreamReader(filename))
                 {
-                    List<string> accountList = new List<string>();
+                    Dictionary<string, decimal> accountList = new Dictionary<string, decimal>();
                     while (!reader.EndOfStream)
                     {
                         var line = reader.ReadLine();
-                        var values = line.Split(',');
-
-                        foreach(string val in values)
-                        {
-                            if (!accountList.Contains(val) && val.Trim() != "")
-                            {
-                                accountList.Add(val.Trim());
-                                count++;
-                            }
+                        var values = line.Split(new char[] { ',', ';' }, StringSplitOptions.None);
+                        
+                        if (values.Length >= 1) {
+                            decimal airdropAmount = -1;
+                            if (values.Length >= 2) airdropAmount = decimal.Parse(values[1].Trim(), System.Globalization.CultureInfo.InvariantCulture);
+                            accountList.Add(values[0].Trim(), airdropAmount);
+                            count++;
                         }
                     }
 
                     using (var conn = new System.Data.SQLite.SQLiteConnection(connectionstring))
                     {
                         conn.Open();
-                        foreach (string s in accountList)
+                        foreach (KeyValuePair<string, decimal> addressValues in accountList)
                         {
-                            var cmdInsert = new SQLiteCommand("Insert into Airdrop (address,balance) values (@address,0)", conn);
-                            cmdInsert.Parameters.Add(new SQLiteParameter("@address", s));
+                            var cmdInsert = new SQLiteCommand("Insert into Airdrop (address,balance,custom_airdrop_amount) values (@address,@custom_airdrop_amount,0)", conn);
+                            cmdInsert.Parameters.Add(new SQLiteParameter("@address", addressValues.Key));
+                            cmdInsert.Parameters.Add(new SQLiteParameter("@custom_airdrop_amount", addressValues.Value));
                             cmdInsert.ExecuteNonQuery();
-
                         }
                         conn.Close();
                     }

@@ -25,9 +25,9 @@ namespace XRPLAirdrop
                 excel.Workbook.Worksheets.Add("Worksheet3");
 
                 var headerRow = new List<string[]>
-                                          {
-                                            new string[] { "id", "Address", "Balance", "dropped", "datetime", "txn_verified", "xrplverify.com", "txn_message", "txn_detail", "txn_hash" }
-                                          };
+                {
+                    new string[] { "id", "Address", "Balance", "dropped", "datetime", "txn_verified", "xrplverify.com", "txn_message", "txn_detail", "txn_hash" }
+                };
 
                 // Determine the header range (e.g. A1:D1)
                 string headerRange = "A1:" + Char.ConvertFromUtf32(headerRow[0].Length + 64) + "1";

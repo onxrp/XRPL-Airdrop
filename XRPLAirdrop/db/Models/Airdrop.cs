@@ -36,6 +36,9 @@ namespace XRPLAirdrop.db.models
 
         [Column("xrpl_verified")]
         public int xrpl_verified { get; set; }
+
+        [Column("custom_airdrop_amount")]
+        public decimal custom_airdrop_amount { get; set; }
     }
 }
 
