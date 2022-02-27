@@ -136,7 +136,7 @@ namespace XRPLAirdrop
                             //Failed
                             countFailed++;
                             db.UpdateFailureAirdrop(a.address, response);
-                            sequence++;
+                            sequence = await xrpl.GetLatestAccountSequence(client, config.airdropAddress);
                             airDropList.Dequeue();
                         }
                     }

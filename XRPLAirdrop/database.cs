@@ -647,7 +647,7 @@ namespace XRPLAirdrop
                         conn.Open();
                         foreach (KeyValuePair<string, decimal> addressValues in accountList)
                         {
-                            var cmdInsert = new SQLiteCommand("Insert into Airdrop (address,balance,custom_airdrop_amount) values (@address,@custom_airdrop_amount,0)", conn);
+                            var cmdInsert = new SQLiteCommand("Insert into Airdrop (address,balance,custom_airdrop_amount) values (@address,0,@custom_airdrop_amount)", conn);
                             cmdInsert.Parameters.Add(new SQLiteParameter("@address", addressValues.Key));
                             cmdInsert.Parameters.Add(new SQLiteParameter("@custom_airdrop_amount", addressValues.Value));
                             cmdInsert.ExecuteNonQuery();
