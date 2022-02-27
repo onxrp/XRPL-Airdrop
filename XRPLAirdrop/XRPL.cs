@@ -70,7 +70,7 @@ namespace XRPLAirdrop
                 IPaymentTransaction paymentTransaction = new PaymentTransaction();
                 paymentTransaction.Account = config.airdropAddress;
                 paymentTransaction.Destination = destinationAddress;
-                paymentTransaction.Amount = new Currency { CurrencyCode = config.currencyCode, Issuer = config.issuerAddress, Value = airdropAmount };
+                paymentTransaction.Amount = new Currency { CurrencyCode = config.currencyCode, Issuer = config.issuerAddress, Value = airdropAmount.ToString() };
                 paymentTransaction.Sequence = sequence;
                 paymentTransaction.Fee = new Currency { CurrencyCode = "XRP", ValueAsNumber = feeInDrops };
                 if(transferFee > 0)
