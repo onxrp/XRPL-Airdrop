@@ -302,15 +302,7 @@ namespace XRPLAirdrop
                 {
                     if (line.Currency == config.currencyCode)
                     {
-                        Decimal bal;
-                        if(line.Balance.Contains("e-"))
-                        {
-                            bal = Decimal.Parse(line.Balance, NumberStyles.AllowExponent | NumberStyles.AllowDecimalPoint);
-                        }
-                        else
-                        {
-                            bal = Convert.ToDecimal(line.Balance);
-                        }
+                        Decimal bal = Decimal.Parse(line.Balance, NumberStyles.AllowExponent | NumberStyles.AllowDecimalPoint);
                         MaxNumberOfDrops = Convert.ToInt32(Math.Floor(bal / Convert.ToDecimal(config.airdropTokenAmt)));
                         break;
                     }
@@ -320,8 +312,8 @@ namespace XRPLAirdrop
                 {
                     //Check to make sure you have enough balance of XRP to send
                     Fee feeObject = await client.Fees();
-                    int totalDropsPerTxn = Convert.ToInt32(Math.Ceiling(feeObject.Drops.OpenLedgerFee * config.feeMultiplier));
-                    int totalSafeTransactionsPossible = Convert.ToInt32(Math.Floor(totalFreeXRP / totalDropsPerTxn));
+                    Decimal totalDropsPerTxn = Math.Ceiling(feeObject.Drops.OpenLedgerFee * config.feeMultiplier);
+                    Decimal totalSafeTransactionsPossible = Math.Floor(totalFreeXRP / totalDropsPerTxn);
                     if (MaxNumberOfDrops > totalSafeTransactionsPossible)
                     {
                         throw new Exception("Not enough XRP to send transactions");
