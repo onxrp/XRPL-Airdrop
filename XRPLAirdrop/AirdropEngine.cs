@@ -55,10 +55,10 @@ namespace XRPLAirdrop
                     db.UpdateFailureAirdrop("Excluded from airdrop. address was not verified through xrplverify.com", config);
                 }
 
-                int MaxDropAmt = await xrpl.ReturnAmountToDrop();
+                Decimal MaxDropAmt = await xrpl.ReturnAmountToDrop();
                 if (MaxDropAmt < config.numberOfTrustlines)
                 {
-                    config.numberOfTrustlines = MaxDropAmt;
+                    config.numberOfTrustlines = Convert.ToInt32(MaxDropAmt);
                 }
 
                 Queue<Airdrop> airDropList = db.GetNonDroppedRecord(config);

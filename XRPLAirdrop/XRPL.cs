@@ -280,12 +280,12 @@ namespace XRPLAirdrop
             }
         }
 
-        public async Task<int> ReturnAmountToDrop()
+        public async Task<Decimal> ReturnAmountToDrop()
         {
             IRippleClient client = new RippleClient(config.websockUrl);
             client.Connect();
 
-            int MaxNumberOfDrops = 1;
+            Decimal MaxNumberOfDrops = 1;
             try
             {
                 AccountInfo account = await client.AccountInfo(config.airdropAddress);
@@ -309,9 +309,9 @@ namespace XRPLAirdrop
                         }
                         else
                         {
-                            bal = Convert.ToDecimal(line.Balance);
+                            bal = Convert.ToDecimal(line.Balance, CultureInfo.InvariantCulture);
                         }
-                        MaxNumberOfDrops = Convert.ToInt32(Math.Floor(bal / Convert.ToDecimal(config.airdropTokenAmt)));
+                        MaxNumberOfDrops = Math.Floor(bal / Convert.ToDecimal(config.airdropTokenAmt, CultureInfo.InvariantCulture));
                         break;
                     }
                 }
