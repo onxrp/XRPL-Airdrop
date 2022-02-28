@@ -302,7 +302,15 @@ namespace XRPLAirdrop
                 {
                     if (line.Currency == config.currencyCode)
                     {
-                        Decimal bal = Decimal.Parse(line.Balance, NumberStyles.AllowExponent | NumberStyles.AllowDecimalPoint);
+                        Decimal bal;
+                        if(line.Balance.Contains("e-"))
+                        {
+                            bal = Decimal.Parse(line.Balance, NumberStyles.AllowExponent | NumberStyles.AllowDecimalPoint);
+                        }
+                        else
+                        {
+                            bal = Convert.ToDecimal(line.Balance);
+                        }
                         MaxNumberOfDrops = Convert.ToInt32(Math.Floor(bal / Convert.ToDecimal(config.airdropTokenAmt)));
                         break;
                     }
