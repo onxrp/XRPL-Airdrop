@@ -91,6 +91,7 @@ namespace XRPLAirdrop
             }
             catch (Exception ex)
             {
+                // Console.WriteLine("Error in SendXRPPaymentAsync(): " + ex.Message + " " + ex.StackTrace);
                 throw new Exception(ex.Message);
             }
         }
@@ -293,6 +294,7 @@ namespace XRPLAirdrop
                 decimal totalFreeXRP = account.AccountData.Balance.ValueAsNumber - 1000000;
 
                 AccountLinesRequest req = new AccountLinesRequest(config.airdropAddress);
+                req.Limit = 400;
                 AccountLines accountLines = await client.AccountLines(req);
                 if(accountLines.TrustLines.Count == 0)
                 {
@@ -331,7 +333,8 @@ namespace XRPLAirdrop
             }
             catch (Exception ex)
             {
-                throw new Exception("Error in ReturnAmountToDrop(): " + ex.Message);
+                Console.WriteLine(ex.StackTrace);
+                throw new Exception("Error in ReturnAmountToDrop() for act '" + config.airdropAddress + "': " + ex.Message);
             }
             finally
             {

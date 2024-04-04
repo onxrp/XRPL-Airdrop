@@ -90,8 +90,10 @@ namespace XRPLAirdrop
 
                         int feeInDrops = Convert.ToInt32(Math.Floor(f.Drops.OpenLedgerFee * config.feeMultiplier));
 
+                        // Console.WriteLine("Sending to: " + a.address + " with amount: " + a.custom_airdrop_amount + " and fee: " + feeInDrops.ToString() + " and sequence: " + sequence.ToString());
                         Submit response = await xrpl.SendXRPPaymentAsync(client, a.address, sequence, feeInDrops, a.custom_airdrop_amount, config.transferFee);
                         //Transaction Node isn't Current. Wait for Network
+                        // Console.WriteLine("Response: " + response.EngineResult);
                         if (response.EngineResult == "noCurrent" || response.EngineResult == "noNetwork")
                         {
                             int retry = 0;
